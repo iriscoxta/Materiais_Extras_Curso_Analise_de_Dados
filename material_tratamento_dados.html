@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tratamento de Dados — Guia Didático Completo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0d0f1a;
+    --surface: #13162a;
+    --card: #181c35;
+    --border: #252b4a;
+    --accent: #5b8cfa;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --accent4: #fb923c;
+    --accent5: #f472b6;
+    --text: #e2e8f0;
+    --muted: #8892b0;
+    --code-bg: #0a0c1a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 15px;
+  }
+
+  /*  HERO  */
+  .hero {
+    background: linear-gradient(135deg, #0d0f1a 0%, #131735 50%, #0f1625 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 72px 48px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 480px; height: 480px;
+    background: radial-gradient(circle, rgba(91,140,250,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 30%;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(167,139,250,.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(91,140,250,.12);
+    border: 1px solid rgba(91,140,250,.3);
+    border-radius: 99px;
+    padding: 4px 14px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 60%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    max-width: 640px;
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 32px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .hero-meta span {
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hero-meta span::before { content: ''; color: var(--accent3); font-size: 8px; }
+
+  /*  LAYOUT  */
+  .wrapper {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 100vh;
+  }
+
+  /*  SIDEBAR  */
+  .sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 32px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .sidebar-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 24px;
+    margin-bottom: 12px;
+  }
+  .sidebar a {
+    display: block;
+    padding: 8px 24px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    border-left: 2px solid transparent;
+    transition: all .2s;
+  }
+  .sidebar a:hover {
+    color: var(--text);
+    border-left-color: var(--accent);
+    background: rgba(91,140,250,.06);
+    padding-left: 28px;
+  }
+  .sidebar a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: rgba(91,140,250,.08);
+  }
+  .sidebar-group { margin-bottom: 8px; }
+  .sidebar-group-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #4a5180;
+    padding: 12px 24px 4px;
+  }
+
+  /*  MAIN  */
+  main { padding: 48px 56px; max-width: 900px; }
+
+  /*  SECTIONS  */
+  section { margin-bottom: 72px; }
+  section:target { scroll-margin-top: 24px; }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  h2 {
+    font-size: 1.85rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #fff;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 28px 0 12px;
+  }
+  h3.accent { color: var(--accent); }
+  h3.accent2 { color: var(--accent2); }
+  h3.accent3 { color: var(--accent3); }
+  h3.accent4 { color: var(--accent4); }
+  h3.accent5 { color: var(--accent5); }
+
+  p { color: #b0bcd8; margin-bottom: 14px; }
+  p strong { color: var(--text); font-weight: 600; }
+
+  /*  CALLOUT  */
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    border-left: 3px solid;
+    font-size: 14px;
+  }
+  .callout-info { background: rgba(91,140,250,.08); border-color: var(--accent); color: #93b4ff; }
+  .callout-warn { background: rgba(251,146,60,.08); border-color: var(--accent4); color: #fdba74; }
+  .callout-success { background: rgba(52,211,153,.08); border-color: var(--accent3); color: #6ee7b7; }
+  .callout-tip { background: rgba(167,139,250,.08); border-color: var(--accent2); color: #c4b5fd; }
+  .callout strong { color: #fff; display: block; margin-bottom: 4px; font-size: 13px; letter-spacing: .5px; }
+
+  /*  CODE  */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; }
+  .kw { color: #5b8cfa; }
+  .fn { color: #34d399; }
+  .st { color: #fbbf24; }
+  .cm { color: #4a5568; font-style: italic; }
+  .nm { color: #f472b6; }
+  p code {
+    background: rgba(91,140,250,.12);
+    color: #93b4ff;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12.5px;
+  }
+
+  /*  GRID CARDS  */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    transition: border-color .2s, transform .2s;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card-icon { font-size: 22px; margin-bottom: 10px; }
+  .card h4 { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .card p { font-size: 12px; color: var(--muted); margin: 0; }
+
+  /*  TABLE  */
+  .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 10px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th {
+    background: var(--card);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(37,43,74,.6);
+    color: #b0bcd8;
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(91,140,250,.04); }
+
+  /*  BADGE  */
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 99px;
+    margin: 2px;
+  }
+  .badge-blue { background: rgba(91,140,250,.18); color: #93b4ff; border: 1px solid rgba(91,140,250,.3); }
+  .badge-green { background: rgba(52,211,153,.14); color: #6ee7b7; border: 1px solid rgba(52,211,153,.25); }
+  .badge-yellow { background: rgba(251,191,36,.14); color: #fcd34d; border: 1px solid rgba(251,191,36,.25); }
+  .badge-red { background: rgba(248,113,113,.14); color: #fca5a5; border: 1px solid rgba(248,113,113,.25); }
+  .badge-purple { background: rgba(167,139,250,.15); color: #c4b5fd; border: 1px solid rgba(167,139,250,.28); }
+
+  /*  FORMULA BOX  */
+  .formula {
+    background: var(--code-bg);
+    border: 1px solid rgba(91,140,250,.3);
+    border-radius: 10px;
+    padding: 18px 24px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    color: var(--accent2);
+    margin: 20px 0;
+    letter-spacing: .5px;
+  }
+  .formula small { display: block; color: var(--muted); font-size: 11px; margin-top: 8px; font-family: 'Sora', sans-serif; }
+
+  /*  STEPS  */
+  .steps { margin: 20px 0; }
+  .step {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: start;
+  }
+  .step-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(91,140,250,.15);
+    border: 1px solid rgba(91,140,250,.35);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-content h4 { font-size: 14px; color: #fff; margin-bottom: 4px; }
+  .step-content p { font-size: 13px; color: var(--muted); margin: 0; }
+
+  /*  COMPARISON  */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .compare-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .compare-box h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .compare-box ul { list-style: none; }
+  .compare-box ul li {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 4px 0;
+    display: flex;
+    gap: 8px;
+  }
+  .compare-box ul li::before { content: '→'; color: var(--accent); flex-shrink: 0; }
+  .compare-box.green { border-color: rgba(52,211,153,.25); }
+  .compare-box.green h4 { color: var(--accent3); }
+  .compare-box.red { border-color: rgba(248,113,113,.2); }
+  .compare-box.red h4 { color: #f87171; }
+
+  /*  RULE BOX  */
+  .rule-box {
+    background: linear-gradient(135deg, rgba(91,140,250,.06), rgba(167,139,250,.06));
+    border: 1px solid rgba(91,140,250,.2);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .rule-box h4 { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 12px; letter-spacing: .5px; text-transform: uppercase; }
+  .rule-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(37,43,74,.5);
+  }
+  .rule-item:last-child { border-bottom: none; }
+  .rule-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    min-width: 70px;
+    background: rgba(91,140,250,.12);
+    padding: 2px 8px;
+    border-radius: 6px;
+    text-align: center;
+  }
+  .rule-desc { font-size: 13px; color: var(--muted); }
+
+  /*  QUIZ  */
+  .quiz {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 24px 0;
+  }
+  .quiz h4 { font-size: 14px; color: var(--accent2); margin-bottom: 10px; }
+  .quiz p { font-size: 13.5px; }
+  .quiz details { margin-top: 10px; }
+  .quiz summary {
+    font-size: 12px;
+    color: var(--accent);
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: .5px;
+  }
+  .quiz summary:hover { color: #93b4ff; }
+  .quiz .answer {
+    margin-top: 10px;
+    padding: 12px;
+    background: rgba(52,211,153,.07);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent3);
+    font-size: 13px;
+    color: #6ee7b7;
+  }
+
+  /*  DIVIDER  */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    margin: 40px 0;
+    opacity: .3;
+  }
+
+  /*  RESPONSIVE  */
+  @media (max-width: 768px) {
+    .wrapper { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    main { padding: 24px 20px; }
+    .compare { grid-template-columns: 1fr; }
+    .hero { padding: 40px 24px; }
+  }
+
+  /*  SCROLLBAR  */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #252b4a; border-radius: 3px; }
+
+  /*  TAGS PANEL  */
+  .tag-line { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+  .tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 99px;
+    background: rgba(91,140,250,.1);
+    color: #7da9ff;
+    border: 1px solid rgba(91,140,250,.2);
+  }
+
+  /*  HIGHLIGHT  */
+  .highlight-box {
+    border: 1px solid rgba(251,146,60,.3);
+    background: rgba(251,146,60,.06);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .highlight-box .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent4);
+    margin-bottom: 8px;
+  }
+  .highlight-box p { color: #fdba74; margin: 0; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Módulo 4 · Curso de Análise de Dados</div>
+  <h1>Tratamento de Dados</h1>
+  <p>Guia didático completo: dos conceitos fundamentais de limpeza e EDA até técnicas avançadas de tratamento com Python/Pandas.</p>
+  <div class="hero-meta">
+    <span>Python & Pandas</span>
+    <span>Estatística Aplicada</span>
+    <span>Exemplos práticos</span>
+  </div>
+</div>
+
+<div class="wrapper">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-title">Conteúdo</div>
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">Fundamentos</div>
+      <a href="#por-que-tratar">1. Por que tratar dados</a>
+      <a href="#eda">2. EDA</a>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">Estatística</div>
+      <a href="#medidas-central">3. Média, Mediana e Moda</a>
+      <a href="#dispersao">4. Variância e Desvio Padrão</a>
+      <a href="#quartis">5. Quartis</a>
+      <a href="#graficos">6. Histograma e Boxplot</a>
+      <a href="#correlacao">7. Correlação</a>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">Tratamentos</div>
+      <a href="#outliers">8. Outliers</a>
+      <a href="#valores-ausentes">9. Valores Ausentes</a>
+      <a href="#duplicatas">10. Duplicatas</a>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">Transformações</div>
+      <a href="#normalizacao">11. Normalização</a>
+      <a href="#encoding">12. Encoding</a>
+      <a href="#datas">13. Tratamento de Datas</a>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">Referência</div>
+      <a href="#checklist"> Checklist Final</a>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main>
+
+    <!--  -->
+    <section id="por-que-tratar">
+      <div class="section-number">01 / FUNDAMENTOS</div>
+      <h2>Por Que Tratar Dados?</h2>
+
+      <p>Dados raramente chegam prontos para análise. Ao extrair informações de qualquer sistema — um CRM, um ERP, uma planilha, uma API — é praticamente certo que existirão erros, inconsistências e ruídos. O tratamento de dados é o processo de <strong>corrigir, limpar e padronizar</strong> essas informações antes de qualquer análise.</p>
+
+      <div class="callout callout-warn">
+        <strong>Garbage In, Garbage Out</strong>
+        Se um dado sujo entra numa análise, o resultado será igualmente sujo. Não adianta dominar técnicas avançadas de machine learning se a entrada do modelo for ruim.
+      </div>
+
+      <h3 class="accent">Problemas comuns em bases brutas</h3>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Erros de digitação</h4>
+          <p>Ex: estado "SO" em vez de "SP" — erro humano ao inserir dados num CRM.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Valores faltantes</h4>
+          <p>Campos nulos (NaN/None) por falha de sistema, campo não aplicável ou esquecimento.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Inconsistência de formato</h4>
+          <p>Data no padrão americano vs. brasileiro, ponto vs. vírgula decimal, caixa alta vs. baixa.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Duplicatas</h4>
+          <p>Mesmo registro inserido mais de uma vez — distorce médias e soma inflada.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Outliers</h4>
+          <p>Valores muito acima ou abaixo do padrão que podem ser erros ou eventos reais raros.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Tipos errados</h4>
+          <p>Coluna numérica importada como string — impossível fazer cálculos diretamente.</p>
+        </div>
+      </div>
+
+      <h3 class="accent">Tratamento vs. EDA — qual a diferença?</h3>
+      <div class="compare">
+        <div class="compare-box green">
+          <h4>Tratamento de Dados</h4>
+          <ul>
+            <li>Corrigir e preparar a base</li>
+            <li>Remover ou imputar nulos</li>
+            <li>Dropar duplicatas</li>
+            <li>Corrigir formatos</li>
+            <li>Tratar outliers</li>
+          </ul>
+        </div>
+        <div class="compare-box" style="border-color:rgba(167,139,250,.25)">
+          <h4 style="color:var(--accent2)">EDA — Análise Exploratória</h4>
+          <ul>
+            <li>Entender padrões e distribuições</li>
+            <li>Formular hipóteses</li>
+            <li>Identificar relações entre variáveis</li>
+            <li>Já é uma pré-análise dos dados</li>
+            <li>Pode extrair respostas iniciais</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout-info">
+        <strong>Na prática</strong>
+        As duas etapas andam juntas e se alternam. Você pode fazer tratamento → EDA → mais tratamento → EDA. Não existe uma única ordem fixa; o que importa é a investigação contínua da base.
+      </div>
+
+      <h3 class="accent">Por que não pode ir direto para a análise?</h3>
+      <p>Imagine gastar meses estudando algoritmos de regressão e depois aplicar tudo isso numa base cheia de erros. O resultado será uma análise confiável? Não. Um estudo de <em>benchmark</em> de mercado frequentemente aponta que <strong>80% do tempo de um projeto de dados é gasto em coleta e limpeza</strong>. Esse número não é exagero: é a realidade do trabalho de um analista.</p>
+
+      <div class="highlight-box">
+        <div class="label">Regra de Ouro</div>
+        <p>Você pode colocar 90% do esforço no tratamento e apenas 10% na modelagem e ainda obter bons resultados. O contrário — 10% no tratamento e 90% na modelagem — quase sempre gera resultados pouco confiáveis.</p>
+      </div>
+    </section>
+
+    <!--  -->
+    <section id="eda">
+      <div class="section-number">02 / FUNDAMENTOS</div>
+      <h2>EDA — Análise Exploratória de Dados</h2>
+
+      <p>A <strong>Exploratory Data Analysis</strong> (EDA) foi introduzida pelo matemático John Tukey nos anos 1970 e permanece um dos pilares da análise de dados moderna. É o momento de explorar os dados com curiosidade genuína — agir como um detetive que investiga uma cena.</p>
+
+      <div class="callout callout-tip">
+        <strong>Leitura recomendada</strong>
+        "The Data Detective" (Tim Harford) — livro que captura perfeitamente a mentalidade investigativa que um bom analista de dados deve ter.
+      </div>
+
+      <h3 class="accent">O que o EDA responde?</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>O que os dados estão tentando me dizer?</h4>
+            <p>Toda base de dados conta uma história. Entenda por que ela existe, quais filtros foram aplicados e se ela serve para a pergunta que você quer responder.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Tem algo estranho nessa base?</h4>
+            <p>Gere distribuições, boxplots e histogramas. É aqui que você detecta duplicatas, outliers e registros inconsistentes.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Existem grupos ou exceções?</h4>
+            <p>Consigo identificar segmentos sem precisar de algoritmo de clustering? Há um perfil de cliente que se destaca?</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>O que eu ainda não percebi?</h4>
+            <p>Leve sua análise para outra pessoa. Perguntas simples salvam análises inteiras. Não existe pergunta errada durante o EDA.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h4>Quais colunas têm maior variabilidade?</h4>
+            <p>Colunas com alta variância podem impactar fortemente as métricas escolhidas. Isso influencia a decisão de usar média ou mediana.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <h4>Existe relação entre variáveis?</h4>
+            <p>Atenção à multicolinearidade: duas colunas altamente correlacionadas não devem ser usadas juntas em regressões.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="accent">Exemplo prático — Titanic</h3>
+      <p>Pergunta inicial: <em>"O fator gênero influenciou a sobrevivência no Titanic?"</em></p>
+      <div class="compare">
+        <div class="compare-box red">
+          <h4>Sem EDA</h4>
+          <ul>
+            <li>A média de sobrevivência feminina foi maior</li>
+            <li>Conclusão: gênero foi o fator decisivo</li>
+            <li>Análise rasa e possivelmente enviesada</li>
+          </ul>
+        </div>
+        <div class="compare-box green">
+          <h4>Com EDA</h4>
+          <ul>
+            <li>Muitos homens menores de 10 anos sobreviveram</li>
+            <li>Classe social (1ª, 2ª, 3ª) foi mais decisiva que o gênero</li>
+            <li>Dados de idade tinham outliers e registros ausentes</li>
+            <li>Análise mais completa, defensável e acionável</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout-success">
+        <strong>Impacto do EDA</strong>
+        O EDA evita análises rasas ou enviesadas, ajuda a formar hipóteses mais completas, traz informações invisíveis à primeira vista e salva você de comunicar mal uma descoberta ao board de diretores.
+      </div>
+
+      <h3 class="accent">Técnicas essenciais do EDA</h3>
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Técnica</th>
+            <th>O que revela</th>
+            <th>Ferramenta Python</th>
+          </tr>
+          <tr><td>Estatísticas descritivas</td><td>Média, desvio, min/max, quartis</td><td><code>df.describe()</code></td></tr>
+          <tr><td>Contagem de nulos</td><td>Quantidade de valores ausentes por coluna</td><td><code>df.isnull().sum()</code></td></tr>
+          <tr><td>Distribuição de frequências</td><td>Como os valores se concentram</td><td><code>df.hist()</code></td></tr>
+          <tr><td>Boxplot</td><td>Dispersão, quartis e outliers visuais</td><td><code>sns.boxplot()</code></td></tr>
+          <tr><td>Mapa de correlação</td><td>Relações entre variáveis numéricas</td><td><code>sns.heatmap(df.corr())</code></td></tr>
+          <tr><td>Contagem categórica</td><td>Frequência de cada categoria</td><td><code>df['col'].value_counts()</code></td></tr>
+        </table>
+      </div>
+    </section>
+
+    <!--  -->
+    <section id="medidas-central">
+      <div class="section-number">03 / ESTATÍSTICA</div>
+      <h2>Média, Mediana e Moda</h2>
+
+      <p>O trio fundamental da estatística descritiva. Cada medida serve a um contexto específico e escolher a errada pode distorcer completamente sua análise.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Média (x̄)</h4>
+          <p>Soma de todos os valores dividida pela quantidade. Sensível a outliers. Use quando os dados estão bem distribuídos.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Mediana</h4>
+          <p>Valor central da distribuição ordenada. Resistente a outliers. Ideal para distribuições assimétricas.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Moda</h4>
+          <p>Valor que mais se repete. Útil para dados categóricos e para identificar padrões de comportamento.</p>
+        </div>
+      </div>
+
+      <h3 class="accent">Quando usar cada uma</h3>
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Medida</th>
+            <th>Use quando</th>
+            <th>Evite quando</th>
+          </tr>
+          <tr>
+            <td><strong>Média</strong></td>
+            <td>Dados simétricos, sem outliers extremos; cálculos agregados; indicadores de desempenho</td>
+            <td>Há outliers significativos que distorcem o centro</td>
+          </tr>
+          <tr>
+            <td><strong>Mediana</strong></td>
+            <td>Distribuição com outliers ou assimétrica; exploração inicial (EDA)</td>
+            <td>Distribuição simétrica (iguala à média); cálculos de somatório</td>
+          </tr>
+          <tr>
+            <td><strong>Moda</strong></td>
+            <td>Dados categóricos; padrões repetitivos; frequência de itens</td>
+            <td>Quando o valor mais frequente não representa o todo</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3 class="accent">Exemplo — Salários de uma empresa</h3>
+      <p>Considere 6 funcionários com salários: <strong>R$2.000, R$2.500, R$2.800, R$3.000, R$3.200 e R$50.000</strong> (o diretor).</p>
+
+      <div class="compare">
+        <div class="compare-box red">
+          <h4>Média: R$ 10.583</h4>
+          <ul>
+            <li>Fortemente influenciada pelo outlier de R$50.000</li>
+            <li>Não representa a realidade da maioria</li>
+            <li>"Empresa tem bons salários" — conclusão errada</li>
+          </ul>
+        </div>
+        <div class="compare-box green">
+          <h4>Mediana: R$ 2.900</h4>
+          <ul>
+            <li>Ignora o impacto do R$50.000</li>
+            <li>Representa o funcionário típico</li>
+            <li>Conclusão correta: salários são baixos</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout-warn">
+        <strong>Atenção</strong>
+        A mediana não deve ser usada para cálculos agregados. Você não pode multiplicar a "mediana de lucro por loja" pelo número de lojas para chegar ao total — isso só funciona com a média.
+      </div>
+
+      <h3 class="accent">Código Python</h3>
+      <pre><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df = pd.DataFrame({<span class="st">'salario'</span>: [<span class="nm">2000</span>, <span class="nm">2500</span>, <span class="nm">2800</span>, <span class="nm">3000</span>, <span class="nm">3200</span>, <span class="nm">50000</span>]})
+
+<span class="cm"># Comparando as três medidas</span>
+<span class="fn">print</span>(<span class="st">f"Média:   R$ {df['salario'].<span class="fn">mean</span>():.0f}"</span>)    <span class="cm"># R$ 10.583</span>
+<span class="fn">print</span>(<span class="st">f"Mediana: R$ {df['salario'].<span class="fn">median</span>():.0f}"</span>)  <span class="cm"># R$ 2.900</span>
+<span class="fn">print</span>(<span class="st">f"Moda:    R$ {df['salario'].<span class="fn">mode</span>()[0]:.0f}"</span>)  <span class="cm"># sem moda (valores únicos)</span></pre>
+
+      <div class="quiz">
+        <h4> Reflexão</h4>
+        <p>Uma turma tem notas: 5, 6, 6, 6, 7, 7, 10. Qual medida melhor representa o "desempenho típico" desta turma?</p>
+        <details>
+          <summary>Ver resposta</summary>
+          <div class="answer">A moda (6) ou a mediana (6) representam melhor o desempenho típico, pois a nota 10 como outlier puxaria a média para cima. A média seria 6,71, mas a concentração real está no 6.</div>
+        </details>
+      </div>
+    </section>
+
+    <!--  -->
+    <section id="dispersao">
+      <div class="section-number">04 / ESTATÍSTICA</div>
+      <h2>Variância e Desvio Padrão</h2>
+
+      <p>Duas turmas podem ter a mesma média e comportamentos completamente diferentes. A <strong>dispersão</strong> mede o quanto os dados se afastam da média — e revela a confiabilidade daquela média.</p>
+
+      <div class="compare">
+        <div class="compare-box green">
+          <h4>Turma A — Desvio Padrão: 1</h4>
+          <ul>
+            <li>Notas: 6, 7, 7, 8, 7 → Média: 7</li>
+            <li>Dados concentrados perto da média</li>
+            <li>Média é uma boa representação</li>
+            <li>Turma homogênea</li>
+          </ul>
+        </div>
+        <div class="compare-box red">
+          <h4>Turma B — Desvio Padrão: 4</h4>
+          <ul>
+            <li>Notas: 0, 2, 7, 10, 10 → Média: 7</li>
+            <li>Dados muito espalhados</li>
+            <li>Média NÃO representa bem o grupo</li>
+            <li>Turma heterogênea, necessidades diferentes</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="accent">Variância (s²)</h3>
+      <p>Mede a dispersão média em relação à média. É calculada elevando ao quadrado os desvios de cada ponto (para eliminar negativos) e tirando a média desses quadrados.</p>
+
+      <div class="formula">
+        s² = Σ(xᵢ − x̄)² / n
+        <small>Onde xᵢ é cada valor, x̄ é a média e n é a quantidade de valores</small>
+      </div>
+
+      <h3 class="accent">Desvio Padrão (s)</h3>
+      <p>É a raiz quadrada da variância — trazendo o valor de volta à mesma escala dos dados originais. É a métrica principal de dispersão que você usará no dia a dia.</p>
+
+      <div class="formula">
+        s = √s²
+        <small>Quanto maior o desvio padrão em relação à média, menos confiável é aquela média</small>
+      </div>
+
+      <h3 class="accent">Como interpretar</h3>
+      <div class="rule-box">
+        <h4>Referências práticas de desvio padrão</h4>
+        <div class="rule-item">
+          <span class="rule-pct">&lt; 10%</span>
+          <span class="rule-desc">da média → Dispersão baixa, média muito confiável</span>
+        </div>
+        <div class="rule-item">
+          <span class="rule-pct">10–30%</span>
+          <span class="rule-desc">da média → Dispersão moderada, média ainda útil</span>
+        </div>
+        <div class="rule-item">
+          <span class="rule-pct">30–75%</span>
+          <span class="rule-desc">da média → Alta dispersão, use com cuidado; cheque outliers</span>
+        </div>
+        <div class="rule-item">
+          <span class="rule-pct">&gt; 75%</span>
+          <span class="rule-desc">da média → Dispersão crítica; dados provavelmente têm outliers fortes</span>
+        </div>
+      </div>
+
+      <h3 class="accent">Código Python</h3>
+      <pre><span class="cm"># Variância e desvio padrão com Pandas</span>
+variancia = df[<span class="st">'coluna'</span>].<span class="fn">var</span>()
+desvio_padrao = df[<span class="st">'coluna'</span>].<span class="fn">std</span>()
+
+<span class="cm"># No Excel:</span>
+<span class="cm"># Variância  → =VAR.P(intervalo)</span>
+<span class="cm"># Desvio P.  → =DESVPAD(intervalo)</span></pre>
+
+      <div class="callout callout-info">
+        <strong>Regra prática</strong>
+        O desvio padrão é um dos principais indicadores usados para detectar outliers. Se um valor se afasta mais de 3 desvios padrões da média (z-score &gt; 3), é um forte candidato a outlier.
+      </div>
+    </section>
+
+    <!--  -->
+    <section id="quartis">
+      <div class="section-number">05 / ESTATÍSTICA</div>
+      <h2>Quartis</h2>
+
+      <p>Quartis dividem um conjunto de dados <strong>ordenados</strong> em quatro partes iguais de 25% cada. É uma forma de entender onde estão concentrados os dados e identificar extremos.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Q1 — 1º Quartil</h4>
+          <p>25% dos dados estão abaixo deste valor. Limite inferior da caixa do boxplot.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Q2 — Mediana</h4>
+          <p>50% dos dados estão abaixo. É exatamente a mediana — os dois conceitos são o mesmo.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Q3 — 3º Quartil</h4>
+          <p>75% dos dados estão abaixo. Limite superior da caixa do boxplot.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>IQR</h4>
+          <p>Intervalo Interquartil = Q3 − Q1. Faixa central de 50% dos dados. Base para detectar outliers.</p>
+        </div>
+      </div>
+
+      <h3 class="accent">Código Python</h3>
+      <pre><span class="cm"># Calculando quartis com Pandas</span>
+Q1 = df[<span class="st">'coluna'</span>].<span class="fn">quantile</span>(<span class="nm">0.25</span>)
+Q2 = df[<span class="st">'coluna'</span>].<span class="fn">quantile</span>(<span class="nm">0.50</span>)  <span class="cm"># = df['coluna'].median()</span>
+Q3 = df[<span class="st">'coluna'</span>].<span class="fn">quantile</span>(<span class="nm">0.75</span>)
+
+<span class="cm"># Resumo completo (já traz quartis + desvio + min/max)</span>
+df.<span class="fn">describe</span>()
+
+<span class="cm"># Segmentar dados em 4 faixas (como notas: baixa, média-baixa, média-alta, alta)</span>
+df[<span class="st">'faixa'</span>] = pd.<span class="fn">qcut</span>(df[<span class="st">'coluna'</span>], q=<span class="nm">4</span>,
+              labels=[<span class="st">'baixo'</span>, <span class="st">'médio-baixo'</span>, <span class="st">'médio-alto'</span>, <span class="st">'alto'</span>])</pre>
+
+      <h3 class="accent">Aplicações práticas</h3>
+      <div class="tag-line">
+        <span class="tag">Classificar clientes por gasto (A, B, C, D)</span>
+        <span class="tag">Agrupar alunos por nota</span>
+        <span class="tag">Analisar distribuição salarial em RH</span>
+        <span class="tag">Segmentar investimentos</span>
+        <span class="tag">Base para o boxplot</span>
+      </div>
+    </section>
+
+    <!--  -->
+    <section id="graficos">
+      <div class="section-number">06 / VISUALIZAÇÃO</div>
+      <h2>Histograma e Boxplot</h2>
+
+      <h3 class="accent">Histograma</h3>
+      <p>O histograma agrupa valores em faixas (bins) e conta quantos dados caem em cada faixa. É ideal para visualizar a <strong>distribuição de frequências</strong> de uma variável numérica.</p>
+
+      <p>O que o histograma revela:</p>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Concentração</h4>
+          <p>Onde estão a maioria dos valores — visualmente a moda.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Forma da distribuição</h4>
+          <p>Normal (sino), assimétrica, bimodal, cauda longa.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Outliers visuais</h4>
+          <p>Barras isoladas nas extremidades indicam possíveis outliers.</p>
+        </div>
+      </div>
+
+      <h3 class="accent">Tipos de distribuição</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Tipo</th><th>Características</th><th>Média vs. Mediana</th></tr>
+          <tr>
+            <td><strong>Normal</strong></td>
+            <td>Formato de sino, simétrica, concentração no centro</td>
+            <td>Média ≈ Mediana</td>
+          </tr>
+          <tr>
+            <td><strong>Cauda longa direita</strong></td>
+            <td>Massa à esquerda, valores altos e esparsos à direita</td>
+            <td>Média &gt; Mediana</td>
+          </tr>
+          <tr>
+            <td><strong>Cauda longa esquerda</strong></td>
+            <td>Massa à direita, valores baixos e esparsos à esquerda</td>
+            <td>Média &lt; Mediana</td>
+          </tr>
+          <tr>
+            <td><strong>Com outliers</strong></td>
+            <td>Padrão normal mas com barras isoladas distantes</td>
+            <td>Média deslocada pelo outlier</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3 class="accent2">Boxplot (Diagrama de Caixa)</h3>
+      <p>O boxplot condensa visualmente os quartis, a mediana, os limites aceitáveis e os outliers em um único gráfico. É a ferramenta definitiva para análise de dispersão.</p>
+
+      <pre><span class="cm">Anatomia do Boxplot:
+
+    ← Outlier (abaixo do limite inferior)
+  |
+   ← Limite inferior = Q1 − 1.5×IQR
+  
+   ← Q1 (25%)
+   ← Mediana / Q2 (50%)  ← linha central
+   ← Q3 (75%)
+  
+   ← Limite superior = Q3 + 1.5×IQR
+  |
+    ← Outlier (acima do limite superior)</span></pre>
+
+      <h3 class="accent">Código Python — Histograma e Boxplot</h3>
+      <pre><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> seaborn <span class="kw">as</span> sns
+
+<span class="cm"># Histograma</span>
+df[<span class="st">'coluna'</span>].<span class="fn">hist</span>(bins=<span class="nm">20</span>, color=<span class="st">'steelblue'</span>, edgecolor=<span class="st">'white'</span>)
+plt.<span class="fn">title</span>(<span class="st">'Distribuição de valores'</span>)
+plt.<span class="fn">show</span>()
+
+<span class="cm"># Boxplot com Seaborn</span>
+sns.<span class="fn">boxplot</span>(data=df, y=<span class="st">'coluna'</span>, color=<span class="st">'coral'</span>)
+plt.<span class="fn">title</span>(<span class="st">'Boxplot com outliers'</span>)
+plt.<span class="fn">show</span>()</pre>
+    </section>
+
+    <!--  -->
+    <section id="correlacao">
+      <div class="section-number">07 / ESTATÍSTICA</div>
+      <h2>Correlação, Dispersão e Heatmap</h2>
+
+      <p>A correlação mede se duas variáveis se movem juntas — na mesma direção (positiva) ou em direções opostas (negativa). O <strong>coeficiente de Pearson</strong> vai de -1 a +1.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>Faixa de Pearson</th><th>Interpretação</th><th>Exemplo</th></tr>
+          <tr>
+            <td><span class="badge badge-green">+0.7 a +1.0</span></td>
+            <td>Correlação positiva forte</td>
+            <td>Horas de estudo × Nota na prova</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-yellow">+0.4 a +0.69</span></td>
+            <td>Correlação positiva moderada</td>
+            <td>Gênero × Sobrevivência (Titanic)</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-red">-0.4 a +0.4</span></td>
+            <td>Correlação fraca ou nula</td>
+            <td>Número de filhos × Nota no ENEM</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-purple">-0.7 a -1.0</span></td>
+            <td>Correlação negativa forte</td>
+            <td>Temperatura × Uso de casaco</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout callout-warn">
+        <strong>Correlação ≠ Causalidade</strong>
+        Sorvetes vendidos e afogamentos são altamente correlacionados — mas não porque um causa o outro. Ambos aumentam no verão. Sempre pergunte: "Faz sentido esta correlação? Existe uma terceira variável explicando ambos?"
+      </div>
+
+      <h3 class="accent">Gráfico de Dispersão (Scatter Plot)</h3>
+      <p>Cada ponto representa um par de valores. Quando os pontos formam uma tendência ascendente ou descendente, há correlação. Quando estão completamente dispersos, há pouca ou nenhuma relação.</p>
+
+      <h3 class="accent">Heatmap de Correlação</h3>
+      <p>O mapa de calor mostra todas as correlações de uma tabela de forma colorida. Quanto mais intenso o vermelho (ou cor definida), maior a correlação positiva. Muito útil quando há muitas variáveis.</p>
+
+      <pre><span class="cm"># Coeficiente de Pearson entre todas as colunas numéricas</span>
+corr_matrix = df.<span class="fn">corr</span>()
+
+<span class="cm"># Heatmap com Seaborn</span>
+sns.<span class="fn">heatmap</span>(corr_matrix, annot=<span class="kw">True</span>, cmap=<span class="st">'RdBu_r'</span>,
+            vmin=-<span class="nm">1</span>, vmax=<span class="nm">1</span>, fmt=<span class="st">'.2f'</span>)
+plt.<span class="fn">title</span>(<span class="st">'Mapa de Correlação'</span>)
+plt.<span class="fn">show</span>()
+
+<span class="cm"># Gráfico de dispersão</span>
+sns.<span class="fn">scatterplot</span>(data=df, x=<span class="st">'horas_estudo'</span>, y=<span class="st">'nota'</span>)</pre>
+
+      <div class="callout callout-info">
+        <strong>Multicolinearidade</strong>
+        Colunas altamente correlacionadas entre si (ex: quantidade de vendas × valor total de vendas) não devem ser usadas juntas em modelos de regressão. O EDA com heatmap é a forma de detectar isso antes de modelar.
+      </div>
+    </section>
+
+    <!--  -->
+    <section id="outliers">
+      <div class="section-number">08 / TRATAMENTO</div>
+      <h2>Tratamento de Outliers</h2>
+
+      <div class="callout callout-tip">
+        <strong>Conceito</strong>
+        Outliers são valores que fogem significativamente do padrão dos dados. Podem ser erros de entrada (um zero a mais no campo) ou eventos reais e importantes — por isso nunca devem ser removidos automaticamente.
+      </div>
+
+      <h3 class="accent">Método 1 — IQR (Intervalo Interquartil)</h3>
+      <p>O método mais usado e interpretável. Define limites baseados nos quartis e classifica como outlier tudo que estiver além desses limites.</p>
+
+      <div class="formula">
+        Limite inferior = Q1 − 1.5 × IQR<br>
+        Limite superior = Q3 + 1.5 × IQR
+        <small>IQR = Q3 − Q1 &nbsp;|&nbsp; O fator 1.5 é a convenção de Tukey</small>
+      </div>
+
+      <pre><span class="cm"># Detectar outliers com IQR</span>
+Q1 = df[<span class="st">'gasto'</span>].<span class="fn">quantile</span>(<span class="nm">0.25</span>)
+Q3 = df[<span class="st">'gasto'</span>].<span class="fn">quantile</span>(<span class="nm">0.75</span>)
+IQR = Q3 - Q1
+
+limite_inf = Q1 - <span class="nm">1.5</span> * IQR
+limite_sup = Q3 + <span class="nm">1.5</span> * IQR
+
+<span class="cm"># Filtrar outliers</span>
+outliers = df[(df[<span class="st">'gasto'</span>] &lt; limite_inf) | (df[<span class="st">'gasto'</span>] &gt; limite_sup)]
+<span class="fn">print</span>(<span class="st">f"Total de outliers: {<span class="fn">len</span>(outliers)}"</span>)</pre>
+
+      <h3 class="accent">Método 2 — Z-Score</h3>
+      <p>Mede quantos desvios padrões um valor está afastado da média. Valores com |z-score| &gt; 3 são considerados outliers. Mais simples de implementar, mas pode diferir do IQR em alguns casos.</p>
+
+      <div class="formula">
+        z = (x − x̄) / s
+        <small>Se |z| &gt; 3 → Outlier</small>
+      </div>
+
+      <pre><span class="kw">from</span> scipy <span class="kw">import</span> stats
+
+z_scores = <span class="fn">abs</span>(stats.<span class="fn">zscore</span>(df[<span class="st">'gasto'</span>]))
+outliers_z = df[z_scores &gt; <span class="nm">3</span>]
+<span class="fn">print</span>(<span class="st">f"Outliers pelo Z-Score: {<span class="fn">len</span>(outliers_z)}"</span>)</pre>
+
+      <h3 class="accent">O que fazer com os outliers?</h3>
+      <p>A decisão de excluir ou substituir depende da proporção que o outlier representa na base e de sua relevância para o negócio.</p>
+
+      <div class="rule-box">
+        <h4>Regra de Ouro — Outliers</h4>
+        <div class="rule-item">
+          <span class="rule-pct">&lt; 1%</span>
+          <span class="rule-desc">Exclua sem hesitar — erro muito pontual, impacto mínimo</span>
+        </div>
+        <div class="rule-item">
+          <span class="rule-pct">1% – 5%</span>
+          <span class="rule-desc">Pode excluir, mas documente a decisão e justifique aos stakeholders</span>
+        </div>
+        <div class="rule-item">
+          <span class="rule-pct">5% – 10%</span>
+          <span class="rule-desc">Prefira substituir pela mediana ou Q1/Q3 em vez de excluir</span>
+        </div>
+        <div class="rule-item">
+          <span class="rule-pct">&gt; 10%</span>
+          <span class="rule-desc">Provavelmente não é um outlier — pode ser um segmento de dados diferente</span>
+        </div>
+      </div>
+
+      <h3 class="accent">Excluir outliers</h3>
+      <pre><span class="cm"># Manter apenas linhas dentro dos limites</span>
+df_limpo = df[(df[<span class="st">'gasto'</span>] &gt;= limite_inf) & (df[<span class="st">'gasto'</span>] &lt;= limite_sup)]</pre>
+
+      <h3 class="accent">Substituir outliers pela mediana</h3>
+      <pre><span class="cm"># Substituir outliers pela mediana (não pela média — ainda está contaminada)</span>
+df_sub = df.<span class="fn">copy</span>()
+mediana = df[<span class="st">'gasto'</span>].<span class="fn">median</span>()
+df_sub.<span class="fn">loc</span>[(df_sub[<span class="st">'gasto'</span>] &lt; limite_inf) |
+        (df_sub[<span class="st">'gasto'</span>] &gt; limite_sup), <span class="st">'gasto'</span>] = mediana</pre>
+
+      <div class="callout callout-warn">
+        <strong>Casos especiais — não exclua sem investigar</strong>
+        Um valor 999 em "meses de desconto" pode significar "desconto eterno". Um ticket de R$5.000 em base com média de R$100 pode ser um segmento de produto premium. Sempre pergunte: este dado representa algo importante para o negócio?
+      </div>
+    </section>
+
+    <!--  -->
+    <section id="valores-ausentes">
+      <div class="section-number">09 / TRATAMENTO</div>
+      <h2>Valores Ausentes (NaN)</h2>
+
+      <h3 class="accent">Por que faltam valores?</h3>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Falha técnica</h4>
+          <p>Sistema não registrou o dado corretamente ou houve erro na integração de fontes.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Não aplicável</h4>
+          <p>"Número de filhos" para quem não tem filhos — o campo legitimamente fica vazio.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"></div>
+          <h4>Omissão humana</h4>
+          <p>Erro ou esquecimento ao preencher. Sistema que não obriga o campo.</p>
+        </div>
+      </div>
+
+      <h3 class="accent">Identificar valores ausentes</h3>
+      <pre><span class="cm"># Ver total de nulos por coluna</span>
+df.<span class="fn">isnull</span>().<span class="fn">sum</span>()
+
+<span class="cm"># Ver porcentagem de nulos</span>
+(df.<span class="fn">isnull</span>().<span class="fn">sum</span>() / <span class="fn">len</span>(df) * <span class="nm">100</span>).<span class="fn">sort_values</span>(ascending=<span class="kw">False</span>)
+
+<span class="cm"># Informações gerais da base</span>
+df.<span class="fn">info</span>()</pre>
+
+      <h3 class="accent">O que fazer com valores ausentes</h3>
+      <div class="rule-box">
+        <h4>Regra de decisão — Linhas com nulos</h4>
+        <div class="rule-item">
+          <span class="rule-pct">&lt; 5%</span>
+          <span class="rule-desc">Das linhas com nulos → remova com <code>dropna()</code></span>
+        </div>
+        <div class="rule-item">
+          <span class="rule-pct">5% – 50%</span>
+          <span class="rule-desc">Preencha com média, mediana ou valor fixo baseado em contexto de negócio</span>
+        </div>
+        <div class="rule-item">
+          <span class="rule-pct">&gt; 50%</span>
+          <span class="rule-desc">De uma coluna → remova a coluna; usar ela distorceria a análise</span>
+        </div>
+      </div>
+
+      <h3 class="accent">Formas de tratar nulos</h3>
+      <pre><span class="cm"># 1. Remover linhas com nulos</span>
+df_limpo = df.<span class="fn">dropna</span>()
+
+<span class="cm"># 2. Preencher com a mediana (resistente a outliers)</span>
+df[<span class="st">'idade'</span>] = df[<span class="st">'idade'</span>].<span class="fn">fillna</span>(df[<span class="st">'idade'</span>].<span class="fn">median</span>())
+
+<span class="cm"># 3. Preencher com valor fixo</span>
+df[<span class="st">'idade'</span>] = df[<span class="st">'idade'</span>].<span class="fn">fillna</span>(<span class="nm">30</span>)
+
+<span class="cm"># 4. Forward fill (valor anterior) — ideal para séries temporais</span>
+df[<span class="st">'temperatura'</span>] = df[<span class="st">'temperatura'</span>].<span class="fn">ffill</span>()
+
+<span class="cm"># 5. Backward fill (valor posterior)</span>
+df[<span class="st">'temperatura'</span>] = df[<span class="st">'temperatura'</span>].<span class="fn">bfill</span>()
+
+<span class="cm"># 6. Mediana por grupo (mais contextual)</span>
+df[<span class="st">'idade'</span>] = df.<span class="fn">groupby</span>(<span class="st">'genero'</span>)[<span class="st">'idade'</span>].<span class="fn">transform</span>(
+    <span class="kw">lambda</span> x: x.<span class="fn">fillna</span>(x.<span class="fn">median</span>())
+)</pre>
+
+      <div class="callout callout-tip">
+        <strong>Ordem recomendada</strong>
+        Trate outliers ANTES de preencher valores ausentes. Assim, quando você usar a mediana para imputar nulos, ela não estará contaminada pelos outliers que ainda não foram tratados.
+      </div>
+    </section>
+
+    <!--  -->
+    <section id="duplicatas">
+      <div class="section-number">10 / TRATAMENTO</div>
+      <h2>Duplicatas</h2>
+
+      <p>Registros que aparecem mais de uma vez na base. Podem ser linhas <strong>exatamente iguais</strong> ou linhas com a mesma chave mas com diferença em alguma coluna.</p>
+
+      <h3 class="accent">Por que ocorrem?</h3>
+      <div class="tag-line">
+        <span class="tag">Merge N:N gerando cartesian product</span>
+        <span class="tag">Importação duplicada (run 2x)</span>
+        <span class="tag">Input manual duplicado</span>
+        <span class="tag">Pipeline com bug de append</span>
+        <span class="tag">Integração de múltiplas fontes</span>
+      </div>
+
+      <h3 class="accent">Detectar e remover</h3>
+      <pre><span class="cm"># Identificar duplicatas completas</span>
+df.<span class="fn">duplicated</span>().<span class="fn">sum</span>()
+
+<span class="cm"># Identificar por subconjunto de colunas (chave composta)</span>
+df.<span class="fn">duplicated</span>(subset=[<span class="st">'nome'</span>, <span class="st">'idade'</span>]).<span class="fn">sum</span>()
+
+<span class="cm"># Remover duplicatas (mantém a primeira ocorrência)</span>
+df_unico = df.<span class="fn">drop_duplicates</span>(subset=[<span class="st">'nome'</span>, <span class="st">'idade'</span>], keep=<span class="st">'first'</span>)
+
+<span class="cm"># Manter o registro mais recente</span>
+df_unico = df.<span class="fn">drop_duplicates</span>(subset=[<span class="st">'nome'</span>], keep=<span class="st">'last'</span>)</pre>
+
+      <h3 class="accent">Padronizar antes de comparar</h3>
+      <pre><span class="cm"># Normalizar texto antes de checar duplicatas</span>
+df[<span class="st">'nome'</span>] = df[<span class="st">'nome'</span>].<span class="fn">str</span>.<span class="fn">strip</span>().<span class="fn">str</span>.<span class="fn">title</span>()
+df[<span class="st">'genero'</span>] = df[<span class="st">'genero'</span>].<span class="fn">str</span>.<span class="fn">upper</span>()
+
+<span class="cm"># Substituir variações de escrita</span>
+df[<span class="st">'genero'</span>] = df[<span class="st">'genero'</span>].<span class="fn">replace</span>({
+    <span class="st">'f'</span>: <span class="st">'F'</span>, <span class="st">'feminino'</span>: <span class="st">'F'</span>, <span class="st">'Feminino'</span>: <span class="st">'F'</span>
+})</pre>
+
+      <div class="callout callout-success">
+        <strong>Diferença do outlier</strong>
+        Para duplicatas não existe "representar mais de 5% e aí substituir". Uma duplicata confirmada é sempre um erro — simplesmente remova. O que importa é investigar por que aconteceu e se é sistemático.
+      </div>
+    </section>
+
+    <!--  -->
+    <section id="normalizacao">
+      <div class="section-number">11 / TRANSFORMAÇÕES</div>
+      <h2>Normalização e Padronização</h2>
+
+      <p>Quando variáveis numéricas estão em escalas muito diferentes (ex: idade em dezenas, salário em milhares, distância em metros), certos algoritmos podem ser influenciados desproporcionalmente pela variável de maior escala. A solução é colocar tudo na mesma base.</p>
+
+      <div class="compare">
+        <div class="compare-box green">
+          <h4>Normalização — Min-Max (0 a 1)</h4>
+          <ul>
+            <li>Escala de 0 (mínimo) a 1 (máximo)</li>
+            <li>Ideal para distribuições não-normais</li>
+            <li>Sensível a outliers extremos</li>
+            <li>Fórmula: (x − min) / (max − min)</li>
+          </ul>
+        </div>
+        <div class="compare-box" style="border-color:rgba(167,139,250,.25)">
+          <h4 style="color:var(--accent2)">Padronização — Z-Score</h4>
+          <ul>
+            <li>Média = 0, desvio padrão = 1</li>
+            <li>Ideal para distribuições normais</li>
+            <li>Mais resistente a outliers moderados</li>
+            <li>Fórmula: (x − x̄) / s</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="formula">
+        Normalização: x_norm = (x − x_min) / (x_max − x_min)
+        <small>Padronização: x_pad = (x − x̄) / s &nbsp;→&nbsp; mesmo que z-score de detecção de outliers</small>
+      </div>
+
+      <pre><span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> MinMaxScaler, StandardScaler
+
+<span class="cm"># Normalização (Min-Max)</span>
+scaler = <span class="fn">MinMaxScaler</span>()
+df[<span class="st">'idade_norm'</span>] = scaler.<span class="fn">fit_transform</span>(df[[<span class="st">'idade'</span>]])
+
+<span class="cm"># Padronização (Z-Score)</span>
+scaler_z = <span class="fn">StandardScaler</span>()
+df[<span class="st">'idade_pad'</span>] = scaler_z.<span class="fn">fit_transform</span>(df[[<span class="st">'idade'</span>]])
+
+<span class="cm"># Manual com Pandas</span>
+df[<span class="st">'idade_norm'</span>] = (df[<span class="st">'idade'</span>] - df[<span class="st">'idade'</span>].<span class="fn">min</span>()) / \
+                  (df[<span class="st">'idade'</span>].<span class="fn">max</span>() - df[<span class="st">'idade'</span>].<span class="fn">min</span>())</pre>
+
+      <h3 class="accent">Quando NÃO normalizar</h3>
+      <div class="tag-line">
+        <span class="tag">Variável já entre 0 e 1 (porcentagem)</span>
+        <span class="tag">Algoritmos baseados em árvore (Random Forest, XGBoost)</span>
+        <span class="tag">Variável que será exibida em dashboard</span>
+        <span class="tag">Quando outliers são muito extremos (use padronização)</span>
+      </div>
+
+      <div class="callout callout-warn">
+        <strong>Importante</strong>
+        A normalização não altera a correlação entre variáveis — apenas a escala muda. Cada nova base de dados exige nova normalização, pois os mínimos e máximos mudam.
+      </div>
+    </section>
+
+    <!--  -->
+    <section id="encoding">
+      <div class="section-number">12 / TRANSFORMAÇÕES</div>
+      <h2>Encoding de Variáveis Categóricas</h2>
+
+      <p>Modelos matemáticos como regressão linear trabalham apenas com números. Quando temos colunas com textos (gênero, plano, cidade), precisamos convertê-las em representações numéricas — isso é o <strong>encoding</strong>.</p>
+
+      <h3 class="accent">Label Encoding — Para variáveis ordenadas</h3>
+      <p>Atribui um número inteiro a cada categoria. Funciona quando as categorias têm uma <strong>ordem lógica</strong> (ex: Básico &lt; Intermediário &lt; Premium).</p>
+
+      <pre><span class="cm"># Label Encoding com cat.codes (respeita ordem alfabética)</span>
+df[<span class="st">'plano_num'</span>] = df[<span class="st">'plano'</span>].<span class="fn">astype</span>(<span class="st">'category'</span>).cat.codes
+
+<span class="cm"># Label Encoding com ordem definida manualmente</span>
+df[<span class="st">'plano'</span>] = pd.Categorical(df[<span class="st">'plano'</span>],
+              categories=[<span class="st">'Básico'</span>, <span class="st">'Intermediário'</span>, <span class="st">'Premium'</span>, <span class="st">'Lux'</span>],
+              ordered=<span class="kw">True</span>)
+df[<span class="st">'plano_num'</span>] = df[<span class="st">'plano'</span>].cat.codes</pre>
+
+      <div class="callout callout-warn">
+        <strong>Atenção</strong>
+        Se não houver ordem lógica, o label encoding pode introduzir um viés (o modelo pode interpretar que "Vermelho = 3" é maior que "Azul = 1"). Nesse caso, use One-Hot Encoding.
+      </div>
+
+      <h3 class="accent2">One-Hot Encoding — Para variáveis nominais</h3>
+      <p>Cria uma nova coluna binária (0 ou 1) para cada categoria. Ideal quando não existe ordem entre as categorias (gênero, cor, cidade).</p>
+
+      <pre><span class="cm"># One-Hot Encoding com get_dummies</span>
+df_encoded = pd.<span class="fn">get_dummies</span>(df, columns=[<span class="st">'genero'</span>, <span class="st">'cidade'</span>])
+
+<span class="cm"># Resultado: cria colunas como genero_F, genero_M, cidade_SP, cidade_RJ...</span>
+<span class="cm"># Cada coluna tem 1 (verdadeiro) ou 0 (falso)</span></pre>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>Tipo</th><th>Use quando</th><th>Limitação</th></tr>
+          <tr>
+            <td><strong>Label Encoding</strong></td>
+            <td>Variáveis com ordem lógica (tamanho, nível, grau)</td>
+            <td>Não use sem ordem — cria viés artificial</td>
+          </tr>
+          <tr>
+            <td><strong>One-Hot Encoding</strong></td>
+            <td>Variáveis nominais sem ordem (cor, gênero, cidade)</td>
+            <td>Evite se a coluna tiver mais de 10 categorias distintas</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <!--  -->
+    <section id="datas">
+      <div class="section-number">13 / TRANSFORMAÇÕES</div>
+      <h2>Tratamento de Datas</h2>
+
+      <p>Datas são uma das maiores fontes de dor de cabeça no tratamento de dados. Formatos inconsistentes, fusos horários e erros de parsing são problemas comuns. A regra básica: <strong>sempre converta para datetime64</strong> antes de qualquer operação.</p>
+
+      <div class="compare">
+        <div class="compare-box">
+          <h4 style="color:var(--accent)">Formato Americano</h4>
+          <ul>
+            <li>Ordem: MM/DD/AAAA</li>
+            <li>Mês vem ANTES do dia</li>
+            <li>Ex: 03/25/2024 = 25 de março</li>
+          </ul>
+        </div>
+        <div class="compare-box">
+          <h4 style="color:var(--accent3)">Formato Brasileiro</h4>
+          <ul>
+            <li>Ordem: DD/MM/AAAA</li>
+            <li>Dia vem ANTES do mês</li>
+            <li>Ex: 25/03/2024 = 25 de março</li>
+          </ul>
+        </div>
+      </div>
+
+      <pre><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># Formato americano (padrão do Pandas)</span>
+df[<span class="st">'data'</span>] = pd.<span class="fn">to_datetime</span>(df[<span class="st">'data'</span>])
+
+<span class="cm"># Formato brasileiro (dia vem primeiro)</span>
+df[<span class="st">'data_br'</span>] = pd.<span class="fn">to_datetime</span>(df[<span class="st">'data_br'</span>], dayfirst=<span class="kw">True</span>)
+
+<span class="cm"># Com tratamento de erros (datas inválidas viram NaT)</span>
+df[<span class="st">'data'</span>] = pd.<span class="fn">to_datetime</span>(df[<span class="st">'data'</span>], errors=<span class="st">'coerce'</span>)
+
+<span class="cm"># Extrair componentes da data</span>
+df[<span class="st">'ano'</span>]      = df[<span class="st">'data'</span>].dt.year
+df[<span class="st">'mes'</span>]      = df[<span class="st">'data'</span>].dt.month
+df[<span class="st">'dia'</span>]      = df[<span class="st">'data'</span>].dt.day
+df[<span class="st">'dia_semana'</span>] = df[<span class="st">'data'</span>].dt.<span class="fn">day_name</span>()
+
+<span class="cm"># Calcular diferença em dias</span>
+df[<span class="st">'dias_decorridos'</span>] = (pd.<span class="fn">Timestamp</span>(<span class="st">'today'</span>) - df[<span class="st">'data'</span>]).dt.days
+
+<span class="cm"># Converter formato Excel (número de dias desde 30/12/1899)</span>
+df[<span class="st">'data'</span>] = pd.<span class="fn">to_datetime</span>(df[<span class="st">'data_excel'</span>],
+             unit=<span class="st">'D'</span>, origin=<span class="st">'1899-12-30'</span>)
+
+<span class="cm"># Gerar range de datas</span>
+datas_futuras = pd.<span class="fn">date_range</span>(start=<span class="st">'2025-01-01'</span>, periods=<span class="nm">7</span>, freq=<span class="st">'D'</span>)</pre>
+
+      <div class="callout callout-info">
+        <strong>Dica prática</strong>
+        Após converter com <code>to_datetime(errors='coerce')</code>, use <code>df.isnull().sum()</code> para ver quantas datas não puderam ser convertidas. Esses NaT devem ser tratados como valores ausentes.
+      </div>
+    </section>
+
+    <!--  -->
+    <section id="checklist">
+      <div class="section-number">REFERÊNCIA</div>
+      <h2> Checklist de Tratamento</h2>
+
+      <p>Use este checklist como guia ao iniciar qualquer projeto de dados. A ordem sugerida não é absoluta — adapte conforme o contexto.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Entenda a origem dos dados</h4>
+            <p>Como foram coletados? Quais filtros foram aplicados? Qual sistema gerou? Converse com TI e stakeholders.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Inspeção inicial</h4>
+            <p>Execute <code>df.head()</code>, <code>df.info()</code> e <code>df.describe()</code>. Entenda os tipos, tamanhos e valores de cada coluna.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Remova duplicatas</h4>
+            <p>Identifique a chave primária da tabela. Use <code>drop_duplicates()</code>. Investigue a causa da duplicação.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Corrija tipos e formatos</h4>
+            <p>Colunas numéricas importadas como string. Datas em formato incorreto. Separador decimal (ponto vs. vírgula).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h4>Trate outliers</h4>
+            <p>Use IQR ou Z-Score. Decida se exclui ou substitui com base nos critérios de % e relevância para o negócio.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <h4>Trate valores ausentes</h4>
+            <p>Após tratar outliers. Decida entre dropna, fillna (média/mediana/valor fixo), ffill ou bfill conforme o contexto.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">7</div>
+          <div class="step-content">
+            <h4>Execute o EDA</h4>
+            <p>Histogramas, boxplots, correlações. Formule hipóteses. Volte aos passos anteriores se descobrir novos problemas.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">8</div>
+          <div class="step-content">
+            <h4>Normalize / Padronize (se necessário)</h4>
+            <p>Apenas se for usar modelos que dependem de escala (regressão, KNN, SVM). Guarde min, max e desvio para uso futuro.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">9</div>
+          <div class="step-content">
+            <h4>Encode variáveis categóricas (se necessário)</h4>
+            <p>Label Encoding para variáveis ordenadas. One-Hot para nominais (até ~10 categorias).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">10</div>
+          <div class="step-content">
+            <h4>Documente tudo</h4>
+            <p>Registre cada decisão tomada: o que foi removido, o que foi imputado e por quê. Reprodutibilidade é fundamental.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h3 class="accent">Funções Python essenciais — referência rápida</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Tarefa</th><th>Função</th></tr>
+          <tr><td>Inspeção geral</td><td><code>df.info()</code> · <code>df.describe()</code> · <code>df.head()</code></td></tr>
+          <tr><td>Nulos por coluna</td><td><code>df.isnull().sum()</code></td></tr>
+          <tr><td>Remover nulos</td><td><code>df.dropna()</code></td></tr>
+          <tr><td>Preencher nulos</td><td><code>df['col'].fillna(valor)</code></td></tr>
+          <tr><td>Forward fill</td><td><code>df['col'].ffill()</code></td></tr>
+          <tr><td>Detectar duplicatas</td><td><code>df.duplicated().sum()</code></td></tr>
+          <tr><td>Remover duplicatas</td><td><code>df.drop_duplicates(subset=[...])</code></td></tr>
+          <tr><td>Quartis</td><td><code>df['col'].quantile([.25,.5,.75])</code></td></tr>
+          <tr><td>Resumo estatístico</td><td><code>df.describe()</code></td></tr>
+          <tr><td>Correlação</td><td><code>df.corr()</code></td></tr>
+          <tr><td>Segmentar por quartis</td><td><code>pd.qcut(df['col'], q=4, labels=[...])</code></td></tr>
+          <tr><td>Converter data</td><td><code>pd.to_datetime(df['col'], dayfirst=True)</code></td></tr>
+          <tr><td>One-Hot Encoding</td><td><code>pd.get_dummies(df, columns=['col'])</code></td></tr>
+          <tr><td>Normalização</td><td><code>MinMaxScaler().fit_transform(df[['col']])</code></td></tr>
+          <tr><td>Padronização</td><td><code>StandardScaler().fit_transform(df[['col']])</code></td></tr>
+        </table>
+      </div>
+
+      <div class="callout callout-success">
+        <strong>Princípio final</strong>
+        Não existe fórmula mágica em tratamento de dados. Existe investigação, curiosidade, conversa com stakeholders e adaptação das regras à realidade do seu problema de negócio. Um bom analista é, acima de tudo, um bom detetive.
+      </div>
+    </section>
+
+  </main>
+</div>
+
+</body>
+</html>
